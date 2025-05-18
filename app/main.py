@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from detect_utils import detect_emotion_from_image, detect_emotion_from_video
+from app.detect_utils import detect_emotion_from_image, detect_emotion_from_video
 import os
 import shutil
 from uuid import uuid4
