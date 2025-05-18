@@ -8,8 +8,8 @@ from datetime import datetime
 import torch
 
 # Load YOLO models
-dog_detector = YOLO("backend/models/yolov8m.pt")
-behavior_model = YOLO("backend/models/best.pt")
+dog_detector = YOLO("yolov8m.pt")
+behavior_model = YOLO("app/models/best.pt")
 
 # Configuration
 behavior_classes = ['relax', 'happy', 'angry', 'frown', 'alert']
