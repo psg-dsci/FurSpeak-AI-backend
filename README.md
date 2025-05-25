@@ -1,90 +1,88 @@
 # 🐶 FurSpeak AI - Emotion Detection Backend
 
-Welcome to the backend API of **FurSpeak AI**, an intelligent deep learning system that detects and interprets **dog emotions** from images and videos using a dual-stage YOLO pipeline. This FastAPI-powered service provides real-time predictions with confidence scores and friendly captions.
+Welcome to the backend of **FurSpeak AI**, a smart deep learning system that detects and interprets **dog emotions** from images and videos using a dual-stage YOLOv8 pipeline. Built with FastAPI, this API provides real-time emotion classification with confidence scores, captions, and mood timelines.
 
 ---
 
 ## 🎯 Features
 
-- 🔍 **Two-stage Detection Pipeline**:
-  - **Stage 1**: YOLOv8m (`yolov8m.pt`) to detect dogs (class 16).
-  - **Stage 2**: Custom-trained YOLOv8 (`best.pt`) to classify dog emotions:  
-    `['relax', 'happy', 'angry', 'frown', 'alert']`.
+- 🧠 **Dual-stage Emotion Detection Pipeline**:
+  - **Stage 1**: Detect dogs using YOLOv8m pretrained on COCO (`yolov8m.pt`).
+  - **Stage 2**: Classify dog emotions using a custom YOLOv8 model (`best.pt`).
 
-- 🧠 **Emotion Classes**:
+- 🎭 **Emotion Classes**:
   - `relax`, `happy`, `angry`, `frown`, `alert`
 
-- 📸 **Supports image (`.jpg`, `.jpeg`, `.png`) and video (`.mp4`, `.mov`, `.avi`) inputs.**
+- 📸 Supports:
+  - Images: `.jpg`, `.jpeg`, `.png`
+  - Videos: `.mp4`, `.mov`, `.avi`
 
-- 💡 **Smart captions** based on detected emotions.
+- 📝 Intelligent captions generated based on detected emotions.
 
-- 📈 **Timeline analysis** for videos, including emotion transitions and mood summaries.
+- ⏱️ Timeline analysis for videos (with mood transitions).
 
-- 🗂️ **Temporary media storage** and best-frame snapshot generation for videos.
+- 🖼️ Best-frame snapshot generation for videos.
 
 ---
 
-## 🚀 Getting Started
+# 🚀 Getting Started
 
-### 🔧 Installation
+## 🔧 Installation
 
-1. Clone the repository:
-   git clone [https://github.com/Abhijeet999-beep/FurSpeak-AI-backend.git]
-   
-3. Create a virtual environment (recommended):
-   python -m venv venv
-   source venv/bin/activate  # or venv\Scripts\activate on Windows
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Abhijeet999-beep/FurSpeak-AI-backend.git
+   cd FurSpeak-AI-backend
 
-4. Install dependencies:
-   pip install -r requirements.txt
+2. **Create a virtual environment**
+    ```bash 
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-5. Directory Structure:
-   
+3. **Install dependencies**
+    ```bash
+    pip install -r requirements.txt
+
+## 📂 Project Structure
+
+```
+FurSpeak-AI-backend/
 ├── app/
-│   ├── detect_utils.py
+│   ├── detect_utils.py           # Core logic for image/video processing
 │   └── models/
-│       └── best.pt
-├── temp/                     # Auto-created to store uploaded files and results
-├── main.py                   # FastAPI app
-├── requirements.txt
-└── README.md
+│       └── best.pt               # Custom YOLOv8 model for emotion classification
+├── temp/                         # Auto-created to store uploads, frames, and results
+├── main.py                       # FastAPI application entry point
+├── requirements.txt              # Python dependencies
+└── README.md                     # Project documentation
+```
 
-📦 Dependencies
-Make sure the following Python packages are installed (via requirements.txt):
+## 🔗 API Endpoint
+### 📍 POST /detect/
 
-fastapi
-uvicorn
-python-multipart
-opencv-python
-ultralytics==8.1.0
-torch>=1.13
-numpy
+  - Accepts: Image or Video file
+  - Returns: Emotion, confidence, caption, timestamp, and (for videos) timeline summary
 
-🔗 Note: You must install a CUDA-enabled PyTorch version for GPU support (optional but recommended).
+### ✅ Supported File Types
+  - .jpg, .jpeg, .png, 
+  - .mp4, .avi, .mov
 
-⚙️ Running the Backend
-uvicorn main:app --reload
+## 📊 Sample Output
 
-📤 API Endpoints
-🔹 POST /detect/
-Detect emotion from a dog image or video.
-
-✅ Supported File Types:
-Images: .jpg, .jpeg, .png
-Videos: .mp4, .avi, .mov
-
-🔁 Example Response (Image):
+ ### 🖼️ Image Example
+```
 {
   "imagePath": "temp/saved_image.jpg",
   "emotion": "happy",
   "confidence": 92.3,
   "caption": "Your dog is happy and playful!",
-  "processing_time": 0.0,
+  "processing_time": 0.6,
   "timestamp": "2025-05-25T15:30:00Z",
   "video_info": null
 }
-
-🔁 Example Response (Video):
+```
+### 🎥 Video Example
+```
 {
   "emotion": "relax",
   "confidence": 84.17,
@@ -92,21 +90,26 @@ Videos: .mp4, .avi, .mov
   "timeline": [...],
   "timeline_summary": "Started: happy, Ended: relax, Transitions: happy→relax",
   "frame_sampled": 17,
-  "processing_time": 0.0,
+  "processing_time": 7.4,
   "timestamp": "2025-05-25T15:30:00Z",
   "frame_image_path": "temp/best_frame_abc123.jpg",
   "frame_image_url": "http://127.0.0.1:8000/static/best_frame_abc123.jpg"
 }
 
-🛠️ Developer Notes
-    1. Device fallback is handled: CUDA → CPU.
-    2. Majority voting across frames ensures stable predictions for videos.
-    3. File cleanup is automated for temporary uploads.
-    4. Timeline transitions help interpret behavioral shifts.
+```
+## 🐾 Emotion Glossary
+```
+| Emotion      | Description                   |
+| ------------ | ----------------------------- |
+| 🛋️ `relax`  | Dog is calm and content       |
+| 😄 `happy`  | Dog is joyful and playful     |
+| 😠 `angry`  | Dog is upset or irritated     |
+| 🙁 `frown`  | Dog looks disappointed or low |
+| 🧐 `alert`  | Dog is focused or on guard    |
 
-🤝 Credits:
-
-Dataset annotation via Roboflow
-YOLOv8 models by Ultralytics
-
-Developed with ❤️ by Abhijeet Singh
+```
+## 🧠 Developer Notes
+- ✅ CUDA → CPU fallback
+- ✅ Majority voting stabilizes video predictions
+- ✅ Temporary files auto-cleaned after processing
+- ✅ Timeline tracking shows emotion transitions
