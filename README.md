@@ -1,27 +1,112 @@
-# Deploy FastAPI on Render
+# 🐶 FurSpeak AI - Emotion Detection Backend
 
-Use this repo as a template to deploy a Python [FastAPI](https://fastapi.tiangolo.com) service on Render.
+Welcome to the backend API of **FurSpeak AI**, an intelligent deep learning system that detects and interprets **dog emotions** from images and videos using a dual-stage YOLO pipeline. This FastAPI-powered service provides real-time predictions with confidence scores and friendly captions.
 
-See https://render.com/docs/deploy-fastapi or follow the steps below:
+---
 
-## Manual Steps
+## 🎯 Features
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
-2. Create a new Web Service on Render.
-3. Specify the URL to your new repository or this repository.
-4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
-5. Specify the following as the Start Command.
+- 🔍 **Two-stage Detection Pipeline**:
+  - **Stage 1**: YOLOv8m (`yolov8m.pt`) to detect dogs (class 16).
+  - **Stage 2**: Custom-trained YOLOv8 (`best.pt`) to classify dog emotions:  
+    `['relax', 'happy', 'angry', 'frown', 'alert']`.
 
-    ```shell
-    uvicorn main:app --host 0.0.0.0 --port $PORT
-    ```
+- 🧠 **Emotion Classes**:
+  - `relax`, `happy`, `angry`, `frown`, `alert`
 
-6. Click Create Web Service.
+- 📸 **Supports image (`.jpg`, `.jpeg`, `.png`) and video (`.mp4`, `.mov`, `.avi`) inputs.**
 
-Or simply click:
+- 💡 **Smart captions** based on detected emotions.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/fastapi)
+- 📈 **Timeline analysis** for videos, including emotion transitions and mood summaries.
 
-## Thanks
+- 🗂️ **Temporary media storage** and best-frame snapshot generation for videos.
 
-Thanks to [Harish](https://harishgarg.com) for the [inspiration to create a FastAPI quickstart for Render](https://twitter.com/harishkgarg/status/1435084018677010434) and for some sample code!
+---
+
+## 🚀 Getting Started
+
+### 🔧 Installation
+
+1. Clone the repository:
+   git clone [https://github.com/Abhijeet999-beep/FurSpeak-AI-backend.git]
+   
+3. Create a virtual environment (recommended):
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+4. Install dependencies:
+   pip install -r requirements.txt
+
+5. Directory Structure:
+   
+├── app/
+│   ├── detect_utils.py
+│   └── models/
+│       └── best.pt
+├── temp/                     # Auto-created to store uploaded files and results
+├── main.py                   # FastAPI app
+├── requirements.txt
+└── README.md
+
+📦 Dependencies
+Make sure the following Python packages are installed (via requirements.txt):
+
+fastapi
+uvicorn
+python-multipart
+opencv-python
+ultralytics==8.1.0
+torch>=1.13
+numpy
+
+🔗 Note: You must install a CUDA-enabled PyTorch version for GPU support (optional but recommended).
+
+⚙️ Running the Backend
+uvicorn main:app --reload
+
+📤 API Endpoints
+🔹 POST /detect/
+Detect emotion from a dog image or video.
+
+✅ Supported File Types:
+Images: .jpg, .jpeg, .png
+Videos: .mp4, .avi, .mov
+
+🔁 Example Response (Image):
+{
+  "imagePath": "temp/saved_image.jpg",
+  "emotion": "happy",
+  "confidence": 92.3,
+  "caption": "Your dog is happy and playful!",
+  "processing_time": 0.0,
+  "timestamp": "2025-05-25T15:30:00Z",
+  "video_info": null
+}
+
+🔁 Example Response (Video):
+{
+  "emotion": "relax",
+  "confidence": 84.17,
+  "caption": "Your dog started out happy and ended up relaxed. Watch for changes in their mood!",
+  "timeline": [...],
+  "timeline_summary": "Started: happy, Ended: relax, Transitions: happy→relax",
+  "frame_sampled": 17,
+  "processing_time": 0.0,
+  "timestamp": "2025-05-25T15:30:00Z",
+  "frame_image_path": "temp/best_frame_abc123.jpg",
+  "frame_image_url": "http://127.0.0.1:8000/static/best_frame_abc123.jpg"
+}
+
+🛠️ Developer Notes
+    1. Device fallback is handled: CUDA → CPU.
+    2. Majority voting across frames ensures stable predictions for videos.
+    3. File cleanup is automated for temporary uploads.
+    4. Timeline transitions help interpret behavioral shifts.
+
+🤝 Credits:
+
+Dataset annotation via Roboflow
+YOLOv8 models by Ultralytics
+
+Developed with ❤️ by Abhijeet Singh
