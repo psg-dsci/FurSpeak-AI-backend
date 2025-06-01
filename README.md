@@ -110,6 +110,6 @@ FurSpeak-AI-backend/
 ```
 ## 🧠 Developer Notes
 - ✅ CUDA → CPU fallback
-- ✅ Majority voting stabilizes video predictions
-- ✅ Temporary files auto-cleaned after processing
-- ✅ Timeline tracking shows emotion transitions
+- ✅ Majority voting stabilizes video predictions.
+- ✅ Temporary files auto-cleaned after processing.
+- ✅ Timeline tracking shows emotion transitions.
