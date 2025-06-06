@@ -8,7 +8,7 @@ Welcome to the backend of **FurSpeak AI**, a smart deep learning system that det
 
 - 🧠 **Dual-stage Emotion Detection Pipeline**:
   - **Stage 1**: Detect dogs using YOLOv8m pretrained on COCO (`yolov8m.pt`).
-  - **Stage 2**: Classify dog emotions using a custom YOLOv8 model (`best.pt`).
+  - **Stage 2**: Classify dog emotions using a custom YOLOv11 model (`best.pt`).
 
 - 🎭 **Emotion Classes**:
   - `relax`, `happy`, `angry`, `frown`, `alert`
