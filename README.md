@@ -113,3 +113,6 @@ FurSpeak-AI-backend/
 - ✅ Majority voting stabilizes video predictions.
 - ✅ Temporary files auto-cleaned after processing.
 - ✅ Timeline tracking shows emotion transitions.
+
+# MADE with LOVE 
+# Abhijeet
