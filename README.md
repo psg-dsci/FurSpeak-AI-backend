@@ -50,7 +50,7 @@ FurSpeak-AI-backend/
 ├── app/
 │   ├── detect_utils.py           # Core logic for image/video processing
 │   └── models/
-│       └── best.pt               # Custom YOLOv8 model for emotion classification
+│       └── best.pt               # Custom YOLOv11 model for emotion classification
 ├── temp/                         # Auto-created to store uploads, frames, and results
 ├── main.py                       # FastAPI application entry point
 ├── requirements.txt              # Python dependencies
