@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Emotion Detector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dog Emotion Detector</h1>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="file" accept="image/*,video/*" />
+            <button type="submit">Detect Emotion</button>
+        </form>
+        <button id="cameraBtn" type="button">Capture from Camera</button>
+        <div id="cameraContainer" style="display:none; flex-direction:column; align-items:center;">
+            <video id="video" width="320" height="240" autoplay></video>
+            <button id="snapBtn" type="button">Take Photo</button>
+            <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+        </div>
+        <div id="result"></div>
+        <div id="preview"></div>
+        <div id="timestamp"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
