@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from .detect_utils import detect_emotion_from_image, detect_emotion_from_video
+from detect_utils import detect_emotion_from_image, detect_emotion_from_video
 import os
 import shutil
 from uuid import uuid4
