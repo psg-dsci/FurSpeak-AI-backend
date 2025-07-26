@@ -1,40 +1,12 @@
-from fastapi import FastAPI, File, UploadFile, Request
-from fastapi.responses import JSONResponse, RedirectResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
-from detect_utils import detect_emotion_from_image, detect_emotion_from_video
 import os
 import shutil
 from uuid import uuid4
+from fastapi import Request, UploadFile
+from fastapi.responses import JSONResponse
 
-app = FastAPI()
+# Assuming TEMP_DIR and detect_emotion_from_image/video are defined elsewhere
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # You can restrict this to ["http://localhost:8000"] for more security
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Ensure temp directory exists
-TEMP_DIR = "temp"
-os.makedirs(TEMP_DIR, exist_ok=True)
-
-# Serve temp directory as static files
-app.mount("/static", StaticFiles(directory=TEMP_DIR), name="static")
-
-# Serve the frontend directory at /frontend (not /)
-frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
-app.mount("/frontend", StaticFiles(directory=frontend_path, html=True), name="frontend")
-
-@app.get("/")
-def root():
-    return RedirectResponse(url="/frontend")
-
-@app.post("/detect/")
-async def detect(request: Request, file: UploadFile = File(...)):
+async def upload_file(request: Request, file: UploadFile):
     try:
         file_ext = os.path.splitext(file.filename)[-1].lower()
         unique_filename = f"{uuid4().hex}{file_ext}"
@@ -52,12 +24,10 @@ async def detect(request: Request, file: UploadFile = File(...)):
         else:
             return JSONResponse(content={"error": "Unsupported file type."}, status_code=400)
 
-        # Optional: Clean up file after processing
-        # Only delete the uploaded file, not the best frame image (frame_image_path)
+        # Optional: Clean up the uploaded file (not any output files like best frame images)
         os.remove(temp_path)
-        # Do NOT delete any frame image returned by detect_emotion_from_video
 
         return result
 
     except Exception as e:
-        return JSONResponse(content={"error": f"Server error: {str(e)}"}, status_code=500)
+        return JSONResponse(content={"error": str(e)}, status_code=500)
